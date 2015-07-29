@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+<input type="button" value='显示另一个' onclick='showOther()'>
+<img src="logo地.png" alt="这是替代文字" title='这是提示信息'>
+<table>
+	<tr id='tr1'>
+	<td tdindex='1' onclick='clickTr()'>1</td>
+	<td tdindex='2'>2</td>
+	<td tdindex='3'>3</td></tr>
+</table>
+<table id="mytab"></table>
+<input type="button" value="改变localStorage" id="btn_stora" onclick='changeStore()'>
+<input type="color" id="mycolor" onchange="getColor()">
+<div id="testDiv">
+    <span><div id="test1">test1</div></span>
+    <span><div id="test2">test2</div></span>
+</div>
+
+
+	<div id="div1">
+		<input type="text" id='txt'>
+	</div><br>
+	<canvas id="myCanvas" width="300" height='300' style='border:1px solid #000'></canvas>
+    <input type="button" value='loadModule' onclick='loadM()'>
+    <div id="loadDiv" style='width:200px;height:200px;border:1px solid blue'></div>
+	<script>
+
+
+
+function showOther(){
+	var f1 = parent.document.getElementById('f1');
+	var f2 = parent.document.getElementById('f2');
+	f1.style.display = 'block';
+	f2.style.display = 'none';
+}
+
+
+
+
+var t1 = new Date('2015-3-1');
+//alert(t1.getDate())
+
+//alert(1234['toString']['length']);  //  1
+var tos = 1234['toString'];
+console.log(1234['toString'],tos,tos['length']);
+
+//alert(typeof []);
+
+//数值型与字符串转换
+var num= 2.546633232;
+console.log(parseInt(num));
+
+
+
+var ss ='3.1564525E-20';
+var num = Number(ss);
+var ff = parseFloat(ss);
+console.log(ss,num,typeof num=='number');
+console.log(ff,typeof ff=='number');
+console.log(ss,typeof ss,isNaN(ss));
+
+x=1; <!--x=3;
+--> x=2;
+console.log('x',x);
+function countDown(n){
+	while(n -->0) console.log('n',n);
+
+}
+countDown(5);
+
+var uStr ;
+var nullObj = null;
+var undefinedStr = undefined;
+var t1 = typeof uStr;
+var t2 = typeof nullObj;
+console.log(t1);
+console.log(t2);
+console.log(t1==t2);
+console.log(t1===t2);
+console.log(t1!=t2);
+console.log('null与null比较',nullObj==null);
+console.log('null与null恒等比较',nullObj===null);
+console.log('undefined与null比较',undefinedStr==null);
+console.log('undefined与null恒等比较',undefinedStr===null);
+
+
+var name = "Bob";  
+var nameObj ={  
+    name : "Tom",  
+    showName : function(){  
+        alert(this.name);  
+    },  
+    waitShowName : function(){
+        var that = this;
+        //this.showName();
+        setTimeout(function (){
+        	alert(this);
+        }, 1000);
+    }
+}; 
+ 
+// nameObj.waitShowName();
+
+
+//var fun = new Function("alert(this)");
+//fun();
+
+
+var obj ={
+	"outername":'licui',
+	"add": function (){
+		var person ={
+			"age":22,
+			"innername":  this.outername
+		};
+		console.log(this);
+		console.log(person);
+	}
+};
+
+obj.add();
+
+
+
+
+
+function fun(){
+this.name = 'mm';
+}
+
+var obj = new fun();
+console.log(obj.name);//mm
+delete obj.name;
+console.log(obj.name); //undefined
+console.log(obj);
+
+
+
+	window.onload=function (){
+		var div1 = document.getElementById('test1'), 
+		parent1 = div1.parentNode;
+ 		parent1.removeChild(div1);
+ 		//alert(div1.tagName + ":" + div1.innerHTML);
+ 		parent1.appendChild(div1);
+ 		
+ 		var div2 = document.getElementById('test2'), 
+ 		parent2 = div2.parentNode;
+ 		parent2.innerHTML = "";
+ 		//alert(div2.tagName + ":" + div2.innerHTML);
+ 		parent2.appendChild(div2);
+	}
+
+
+	localStorage.setItem('name','licui');
+	window.addEventListener('storage',function (e){
+		
+		console.log(e.oldValue+" "+e.newValue);
+
+	},false);
+	window.attachEvent('storage',function (e){
+		console.log(e.oldValue+" "+e.newValue);
+
+	});
+		function changeStore(){alert(localStorage.getItem('name'));
+		localStorage.setItem('name','reset name,licui');
+	}
+
+
+	var tr1=document.getElementById('tr1');
+	var otab=document.getElementById('mytab');
+	var otr=tr1.cloneNode();  //克隆第一个表格的第一行，在不同浏览器之间表现不同。
+	otab.appendChild(otr); 
+
+var c=document.getElementById("myCanvas");
+var ctx=c.getContext("2d");
+ctx.beginPath();
+ctx.moveTo(20,20);
+ctx.lineTo(20,100);
+ctx.lineTo(120,50);
+ctx.lineTo(100,30);
+ctx.fillStyle="green";
+ctx.strokeStyle="red";
+ctx.lineWidth=2;
+ctx.closePath();
+ctx.stroke();
+ctx.fill();
+
+
+
+
+	function clickTr(){
+		alert('you are clicking the tr');
+
+	}
+
+
+
+
+	function getColor(){
+		var c=document.getElementById('mycolor').value;
+		document.getElementById('div1').innerHTML="颜色值"+c;
+		alert(/[a-zA-Z]/.test(c));
+	}
+	document.getElementById('div1').onchange=function (e){
+		
+		alert('text change'); console.log(this);
+		console.log(e.target);
+
+	}
+	function output(e){
+		alert('text change');
+		console.log(e);
+
+	}
+
+	
+
+	</script>
+</body>
+</html>

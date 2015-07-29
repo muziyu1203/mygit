@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	
+
+<h2>经纬度到上海坐标的转换</h2>
+     <h4>1、源文件为UTF-8格式编码的CSV文件</h4> 
+     <h4>2、源文件字段名和顺序：id,lat,lon</h4>
+     <h4>3、转换后的字段名和顺序：id,lat,lon,x,y</h4> 
+     <h4>4、转换后的文件名为my.csv</h4> 
+
+  <input type="file" id='uploadFile'><br>
+  
+  <div style='margin-top:30px;margin-bottom:30px'>
+  <label for="">编码方式：</label> <br>
+  <input type="radio" name='encoding' value='utf-8'>UTF-8编码
+  <input type="radio" name='encoding' value='gb2312' checked>gb2312编码
+  </div>
+  <input type="button" value='读取CSV坐标点' onclick='readCsv()'>
+	<script>
+  function readCsv(){
+    var radios = document.getElementsByName('encoding');
+    var encode = 'gb2312';
+    for(var i=0,len=radios.length;i<len;i++){
+      if(radios[i].checked){
+         encode =  radios[i].value;
+      }
+      }
+
+    readByEncoding(encode);
+
+  }
+
+	function readByEncoding(encode){
+		var totalArr = [];
+		var file = document.getElementById('uploadFile').files[0];
+		var reader = new FileReader(); 
+  		reader.readAsText(file,encode); 
+  		reader.onload=function(){ 
+  		    var bigdata=this.result;  console.log('读取结果',bigdata);
+  		    var tmparr = bigdata.split(/\r\n/g); 
+  		    
+  		    for(var i=0,len=tmparr.length;i<len;i++){
+
+  		    	var str = tmparr[i];
+  		    	if(i==0){
+  		    		var arr = str.split(',');
+  		    		arr[3]='x';
+  		    		arr[4]='y';
+  		    	}else{
+  		    		var arr = str.split(',');
+  		    		var lat = arr[1];
+  		    		var lon = arr[2];
+  		    		var shxy = lnglatToSh(lon,lat);
+  		    		arr[3]=shxy.x;
+  		    		arr[4]=shxy.y;
+  		    	}
+  		    	
+
+  		    	tmparr[i]=arr;
+  		    }
+  		    console.log(tmparr);
+  		    var content = tmparr.join('\r\n');
+  		     download(content);
+  		  }
+	}
+	function download(content){
+		var blob = new Blob([content], {type: 'text'}); 
+		var a =document.createElement('a');
+		var URL=window.URL || window.webkitURL;
+		a.href=URL.createObjectURL(blob);
+		a.download = 'my.csv';  
+		a.click();
+	}
+	function lnglatToSh(lng,lat) {
+  		var A = 95418.0172735741;
+  		var B = 48.3052839794785;
+  		var C = -11592069.1853624;
+  		var D = 63.9932503167748;
+  		var E = 110821.847990882;
+  		var F = -3469087.15690168;
+  		var x = A * lng + B * lat + C-50+470;
+  		var y = D * lng + E * lat + F-50-235;
+  		return {x:x,y:y};
+	}
+
+	</script>
+</body>
+</html>
