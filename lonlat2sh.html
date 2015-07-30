@@ -77,12 +77,12 @@
 		a.click();
 	}
 	function lnglatToSh(lng,lat) {
-  		var A = 95418.0172735741;
-  		var B = 48.3052839794785;
-  		var C = -11592069.1853624;
-  		var D = 63.9932503167748;
-  		var E = 110821.847990882;
-  		var F = -3469087.15690168;
+  		var A = 1000;
+  		var B = 40;
+  		var C = -10000;
+  		var D = 608;
+  		var E = 10000;
+  		var F = -300000;
   		var x = A * lng + B * lat + C-50+470;
   		var y = D * lng + E * lat + F-50-235;
   		return {x:x,y:y};
